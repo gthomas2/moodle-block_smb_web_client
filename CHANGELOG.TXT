@@ -1,0 +1,135 @@
+ Change log:
+ Version 2014122000 - Potential fix for files showing up with N flag against them in directory listing
+ Version 2014032400 - Fixed bug where shares could not be configured in Moodle 2.6
+ Version 2013101600 - Fixed bug where settings page would always show sponsorship text and get stuck in upgrade loop
+                    - Do not display hidden share components of path on form when using form authentication
+
+ Version 2013101500 - Fixed bug with settings.php not saving
+                    - Enable home directory string to have search and replace run on it
+ Version 2013101400 - Development of this version is sponsored by Overnet Data Ltd www.overnetdata.com
+                    - Fix bug reported by Chris Adams where action bar was not displayed if share array empty
+ Version 2013090300 - fix bug where path is configured with a trailing slash (auto strip slash)
+ Version 2013062500 - ability to configure title of block
+ Version 2013060602 - fixed bug with lib.php checking role membership - changed $role='manager' to $role=='manager' on line 75
+ Version 2013060601 - config_smb_web_clientphp - fixed bug where shareitem converted to sharepath could end up with trailing comma
+ Version 2013060600 - settings.php - added smb_web_client/userprefix to settings
+                    - settings.php - added explanation of filters feature to javascript share table
+                    - block_smb_web_cient.php add links to shares inside of <ul>
+                    - class_smbwebclient.php - escape user prefix properly for preg match by using preg_quote
+                    - class_smbwebclient.php - fixed bug with select statement case entry not breaking and thus leading to two user name parameters being added to command
+                    - class smbwebclient.php - fix infinite redirect issue
+
+ Version 2013043000 - Fixed config page yui table for displaying and editing shares
+ Version 2013021900 - Fixing issues with shares in new windows format (not setting type var, path var, etc)
+ Version 2013020500 - Enhanced text string share area with yui datatable
+                    - Separated action area from $lines in class_smbwebclient (you can now position it wherever you like in view.thtml)
+ Version 2013012800 - Removed all database tables (overkill on share management). Now configured by text strings. 
+                    - Added ability to filter shares by system level roles and cohorts (e.g. so you don't have to have all your staff enrolled on a "staff" course just to restrict a share to them)
+                    - Improved css (doesn't look like XP now!)
+                    - Started porting mime type icons to copy of new moodle 2.4 file icons (so it will also work with moodle 2.2+)
+                    - All shares should now be added as standard windows shares - e.g. \\myserver\myshare
+					
+ Version 2013012400 - Fixed some compatability bugs with ldapcapture plugin 2013012300
+
+ Version 2013012300 - Debug changed to go back to syslog (better than moodle log)
+                    - Modified to work with ldapcapture plugin 2013012300
+ Version 2012121400 - Fixed logging to moodle database where filename contains single quote
+ Version 2012100800 - Removed unnecessarilly long table names
+ Version 2012051201 - Fixed anoying bug with basic auth failures ($_SERVER['PHP_AUTH_USER'] and $_SERVER['PHP_AUTH_PW'] was always getting populated and used even after a login failure - now forces new log in attempt after failure)
+ Version 2012051200 - File class_smbwebclient - fixed issue with $this->cfgUserPrefix preg match not being case insensitive in _SmbClient function
+ 
+ Version 2012033100 - Removed unneccessary and potentially detrimental htmlentities function added in M Coyles version from class_smbwebclient.php "Go" function
+ 
+ Version 2012030610 - Updated for Moodle 2.2+ - all config also moved into Moodle Site
+ Administration System. Issue with ClamAV function resolved.
+ 
+ Version 2011021900 - now works with windows servers! (see instructions at www.citricity.com)
+ 
+ Version 2010090700
+ Bug fix by Jon Witts
+     Removed all deprecated ereg and split functions with preg equivalents
+ Version 2010042100
+ Bug fix by Roy Gore
+     Fixed issue with files of 0 length in smbclient version 3.4+
+    
+ Version 2009100500
+    Modified logging to log to Moodle log instead of syslog
+ 
+ Version 2009080300 
+ Bug fix by Guy Thomas
+    On downloading an entire folder as a zip file, some reverse-proxy servers would handle the request incorrectly and a zip file would be downloaded with a file size of 0KB. This has been fixed by forcing the mime type to application/x-forcedownload for a folder being downloaded as a zip and by enabling the max folder size to be set or simply by removing the size header (if cfgMaxFolderZipSizeMB=0)
+    Added config var max folder zip size for downloading folders as zips - $smb_cfg->cfgMaxFolderZipSizeMB
+ 
+ Version 2009060900
+ Enhancement suggested by Jon witts
+    If smb_cfg->cfgssl not explicitly set then set it according to $CFG->loginhttps
+ 
+ Version 2009032700
+ Bug fixes suggested by Jon Witts
+    Alt tag contents not enclosed in double quotes - breaking validation.
+    Added brackets as banned characters for IE7 / IE8 popup window titles.
+ Fixed Ubuntu 8.10 smbclient bug - requires config variable $smb_cfg->cfgSkipNoPwdParam set to true
+ *
+ Version 2009031700
+ - Added ssl config option as suggested by various members of edugeek.net
+ Thanks to duncane from edugeek for his ideas on this.
+ If $smb_cfg->cfgssl is set to true it will operate over ssl.
+
+ Version 2009021600
+ - Added fix for attempt to open invalid share - now reports error.
+ - Added configurable home directory field $smb_cfg->cfgHomeDirField - necessary to work with open ldap, etc..
+ - Added config variable $smb_cfg->cfgIEProtectMsOffice - stops IE from opening office documents instead of saving them
+
+ Version 2009010900
+ - Added file size to conent-length header. You now get a progress bar whilst downloading a file!
+
+ Version 2008121900
+ - Modified missing config file error to show differently for incorrect config files
+
+ Version 2008091500
+ - Do not show home directory link for manual accounts
+
+ Version 2008081200
+ - Now uses pixpath/f/folder.gif for folder icons - better theme compatibility
+
+ Version 2008080500
+ - Modified to work with ldapcapture auth plugin - smb web client will take the users login
+   credentials and automatically open network shares.
+ - Added ability to prefix user name (e.g. you want all your user names to get prefixed with
+   a domain)
+ - Added _RetryParse function to class_smbwebclient.php - basically, smb web client will
+   retry to parse an smbclient command using the username prefixed with the shares workgroup
+
+ Version 2008071400
+ - Parent class constructor of smbwebclient_moodle was being called too early - bug reported
+   and fixed by Harald Winkelmann
+
+ Version 2008062300
+ - Updated mime types to include office 2007 files.
+
+ Version 2008061900
+ - Enhanced block to enable files to be forced to download (suggested by Nick Shutters)
+   (see new config variable forceDownloads)
+
+ Version 2008053000
+ - Added mod by Eddie Mclafferty to not show block unless logged in
+
+ Version 2008052900
+ - Fixed IE popup window bug in nice_popup_title funciton
+
+ Version 2008050700
+ - Can now display course specific shares on front page thanks to new config variable
+   ($smb_cfg->cfgAllSharesSite=true)
+
+ Version 2008050100
+ - Access shares by course mod contributed by John Williams Tonbridge Grammar School
+ - File links now single anchors with extensions handled via css. File types now show correct
+   images for extensions instead of generic file icon.
+ - Included files that were inline files - some users reported problems with inline files.
+
+ Version 2008012200
+ - Modified version to work with moodle 1.8 (no longer works with 1.7) - changed ldap
+   functions to use ldap authentication plugin class.
+
+ Version 2007082900
+  First version (moodle 1.7)

@@ -1,0 +1,95 @@
+div.content ul.sharelinks{
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+}
+
+.share{
+    display:block;
+    min-width:24px;
+    min-height:24px;
+    background-repeat:no-repeat;
+    background-position:top left;    
+    background-image:url([[pix:block_smb_web_client|f/folder]]);
+    padding-left:24px !important;
+}
+
+.share-no-access{
+    color:#bbb;
+    background-image:url([[pix:block_smb_web_client|f/grey_folder]]);
+}
+
+.share-home{
+    
+}
+
+.yui3-datatable-liner{
+    min-height:1em;
+}
+
+.ico{
+    display:inline-block;
+    min-width:24px;
+    min-height:24px;
+    background-repeat:no-repeat;
+    background-position:top left;
+}
+
+.ico_del{
+    /*background-image:url([[pix:core|i/cross_red_small]]);*/
+    background-image:url([[pix:block_smb_web_client|i/delete]]);
+    background-size:16px 16px;
+}
+
+.ico_edit{
+    background-image:url([[pix:core|i/edit]]);
+}
+
+.yui3-panel .yui3-widget-bd .message div{
+    margin:1em 1em 1em 1em;
+}
+
+.yui3-panel label{
+    font-weight:bold;
+}
+
+.yui3-panel label{
+    width:12em;
+    margin-right:1em;
+    text-align:right;
+    display:inline-block;
+}
+
+.yui3-panel input[type="text"]{
+    
+    display:inline-block;
+    
+    width:80%;
+    text-align:left;
+    
+    padding: 5px;   
+    border: 1px solid #DDDDDD;
+    
+    /*Applying CSS3 gradient*/
+    background: -moz-linear-gradient(center top , #FFFFFF,  #EEEEEE 1px, #FFFFFF 20px);    
+    background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #EEEEEE) to(#FFFFFF));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB', endColorstr='#FFFFFF');
+    
+    /*Applying CSS 3radius*/   
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    
+    /*Applying CSS3 box shadow*/
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    box-shadow: 0 0 2px #DDDDDD;
+
+}
+.yui3-panel input[type="text"]:hover
+{
+    border:1px solid #cccccc;
+}
+.yui3-panel input[type="text"]:focus
+{
+    box-shadow:0 0 2px #55aaee;
+}
