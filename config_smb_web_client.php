@@ -8,9 +8,6 @@
 
 global $DB;
 $smb_cfg=new stdClass;
-                                                                 
-
-
 
 # Log facility 
 
@@ -39,7 +36,7 @@ $smb_cfg->cfgCachePath = '';
 # This script try to set language from web browser. If browser
 # language is not supported you can set a default language.
 
-$smb_cfg->cfgDefaultLanguage = 'en'; 
+$smb_cfg->cfgDefaultLanguage = 'en';
 
 ###################################################################
 # Default charset (as suggested by Norbert Malecki)
@@ -66,8 +63,6 @@ $smb_cfg->cfgArchiver = 'zip';
 
 $smb_cfg->cfgInlineFiles = false;
 
-
-
 #########################################################################
 ## YOU SHOULDN'T NEED TO CHANGE ANYTHING IN THIS FILE BEYOND THIS POINT##
 #########################################################################
@@ -84,8 +79,6 @@ if (!empty($upfx)){
     $smb_cfg->cfgUserPrefix=$upfx;
 }
 
-
-
 ###################################################################
 # Arrays of shares ( other than home directory ) and the courses 
 # they can be shown in.  This is to allow administrators to put 
@@ -100,54 +93,55 @@ if (!empty($shares)){
     foreach ($sharearr as $sharerow){
         // parse sharerow
         $tmparr=explode('|', $sharerow);
-        $title=trim($tmparr[0]);
-        if (count($tmparr)<2){
-            // @todo throw error
-            mtrace('share definition missing pipe symbol '.$sharerow);
-            continue;
+
+        if (count($tmparr)>1){
+            $title = trim($tmparr[0]);
+            $shareitem = trim($tmparr[1]);
+        } else {
+            $tmparr = explode('\\', $sharerow);
+            $title = trim(end($tmparr));
+            $shareitem = trim($sharerow);
         }
 
-        $shareitem=trim($tmparr[1]);
-        
         $tokens=array('courses'=>':CS','cohorts'=>':CH','roles'=>':R');
         $filters=array('courses'=>array(), 'cohorts'=>array(), 'roles'=>array());
-        
+
         $tokenstr=false;
         foreach ($tokens as $key=>$token){
-            if (!$tokenstr){              
+            if (!$tokenstr){
                 //echo ('<p>checking for filter token '.$token.' in '.$shareitem.'</p>');
                 if (strpos($shareitem, $token)===false){
                     continue;
                 } else {
-                   //echo ('<p>token '.$token.' exists</p>');
+                    //echo ('<p>token '.$token.' exists</p>');
                 }
                 $tmparr2=explode($token, $shareitem);
             } else {
                 if (strpos($tokenstr, $token)===false){
                     continue;
-                }                
+                }
                 $tmparr2=explode($token, $tokenstr);
             }
-            
+
             //echo ('<p>found key '.$key.' and token '.$token.'</p>');
-            
+
             if (count($tmparr2)>1){
                 if (!$tokenstr){
                     $shareitem=$tmparr2[0];
                 }
-                $tokenstr=$tmparr2[1];            
+                $tokenstr=$tmparr2[1];
                 if (strpos($tokenstr,'[')===false || strpos($tokenstr,']')===false || strpos($tokenstr,']') < strpos($tokenstr,'[')){
                     // can't do anything with this string as it does not have []
-                    continue;                    
+                    continue;
                 }
-                
+
                 /*
                 var_dump(strpos($tokenstr,'[')); 
                 var_dump(strpos($tokenstr,']'));
                  */
-                
+
                 $tokenstr=substr($tokenstr, strpos($tokenstr,'[')+1, strpos($tokenstr,']')-1);
-         
+
                 $tmparr3=explode(',',str_replace('[','',str_replace(']','',$tokenstr)));
                 foreach ($tmparr3 as &$ta3v){
                     $ta3v=trim($ta3v);
@@ -159,13 +153,13 @@ if (!empty($shares)){
         }
 
         //var_dump($filters);
-        
+
         // remove trailing comma from shareitem
-        $shareitem=trim($shareitem);        
+        $shareitem=trim($shareitem);
         if (substr($shareitem,strlen($shareitem)-1)==','){
             $shareitem=substr($shareitem,0,strlen($shareitem)-1);
-        }        
-        
+        }
+
         $shrobj=array('id'=>$id, 'share'=>trim($shareitem), 'title'=>$title, 'filters'=>$filters);
         $smb_cfg->cfgWinShares[$id]=$shrobj;
         $id++;
@@ -329,8 +323,8 @@ $smb_cfg->cfgssl=get_config('smb_web_client', 'ssl');
 # OR - use Ubuntu 8.4 instead (works OK out of the box)
 
 if (get_config('smb_web_client', 'webos')=='windows'){
-	$smb_cfg->cfgSkipNoPwdParam = false;
+    $smb_cfg->cfgSkipNoPwdParam = false;
 } else {
-	$smb_cfg->cfgSkipNoPwdParam = true;
+    $smb_cfg->cfgSkipNoPwdParam = true;
 }
 ?>

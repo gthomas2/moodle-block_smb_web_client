@@ -28,7 +28,7 @@ if ($ADMIN->fulltree) {
     
     
 $settings->add(new admin_raw_html(
-           'hd_sponsor', '<div style="background-color:#ffa; padding:1em 1em 1em 1em; border-radius:6px; border:4px solid #aa4;"><img style="margin-bottom:1em" src="http://www.overnetdata.com/wp-content/themes/overnet/images/overnet-data-logo.png" alt="sponsorlogo" /><p>'.get_string('sponsor', 'block_smb_web_client').'</p></div>', '',''
+           'hd_sponsor', '<div style="background-color:#ffa; padding:1em 1em 1em 1em; border-radius:6px; border:4px solid #aa4;">'.get_string('sponsor', 'block_smb_web_client').'</p></div>', '',''
         ));    
     
 $settings->add(new admin_setting_configtext(

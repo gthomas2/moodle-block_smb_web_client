@@ -3,7 +3,7 @@ $string['smb_web_client:addinstance']='Add SMB web client instance';
 $string['homedir'] = 'Home Directory';
 $string['pluginname'] = 'Windows Share access';
 
-$string['sponsor']='Development of this release (2013101400) is sponsored by Overnet Data Ltd <a href="http://www.overnetdata.com">www.overnetdata.com</a>';
+$string['sponsor']='Development of this plugin takes plenty of time and there currently isn\'t a mechanism for donations or sponsoring development. If you are interested in taking over this project or helping in the development, please contact me at brudinie@gmail.com';
 
 // Log on error
 $string['logonerror']='Log on error - click here to re-enter credentials.';
@@ -114,6 +114,12 @@ $string['shareformats'] = '<p>List each share on a separate line in standard smb
 <p>To limit shares by system cohort membership, append :CH[cohortidnumber(s)] to the share, e.g.</p>
 <pre>
                \\\admin-server\studentshared:CH[students,staff]
-</pre>                        
+</pre> 
+<pre>
+<p>To provide a custom name for a share, add it before the share delimited by a pipe symbol, e.g.</p>
+<pre>
+               Student Area|\\\admin-server\studentshared:CH[students,staff]
+</pre>
+</pre>
             ';
 ?>
