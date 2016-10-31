@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 'stdout');
 
 $SMBWEBCLIENT_CLASS = 'smbwebclient_moodle';
@@ -11,7 +12,7 @@ include('config_smb_web_client.php'); // config for this block only
 include('class_smbwebclient.php');
 include('class_smbwebclient_moodle.php');
 
-$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM)); // GT Mod 2012033100
+$PAGE->set_context(context_system::instance());
 require_login();
 
 if (!confirm_sesskey()) {

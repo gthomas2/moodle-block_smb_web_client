@@ -39,7 +39,7 @@ class swc{
                         $ci=false;
                         if ($course){
                             // Get context instance
-                            $ci=get_context_instance(CONTEXT_COURSE, $courseid);                                    
+                            $ci=context_course::instance($courseid);
                             // Check capabilities
                             if ($ci && ($COURSE->id==$courseid || has_capability('moodle/course:view', $ci))){
                                 // OK to display

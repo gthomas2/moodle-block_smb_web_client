@@ -178,7 +178,7 @@ var $strings = array (
 );
 
 # constructor
-function smbwebclient ()
+function __construct ()
 {
     $this->InitSession ();
     $this->InitLanguage();
@@ -1206,7 +1206,7 @@ var $parser = array(
 "^NT_STATUS_CANNOT_DELETE" => 'CANNOT_DELETE'
 );
 
-function samba ($path='')
+function __construct($path='')
 {
     if ($path <> '') $this->Go ($path);
     print $path;
@@ -1289,8 +1289,9 @@ function Browse ($order='NA')
         'server' => 'shares', 'share' => 'files', 'folder' => 'files',
         'printer' => 'printjobs'
     );
-    if (isset($results[$this->type])) {
-        $this->results = $this->$results[$this->type];
+    if (!empty($results[$this->type])) {
+        $key = $results[$this->type];
+        $this->results = $this->$key;
         # we need a global var for the compare function
         $GLOBALS['SMBWEBCLIENT_SORT_BY'] = ($this->order <> '') ? $this->order : 'NA';
         uasort($this->results, array('samba', '_GreaterThan'));

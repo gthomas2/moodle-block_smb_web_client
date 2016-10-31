@@ -22,7 +22,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$plugin->version = 2014122000;
+$plugin->version = 2016103100;
 $plugin->release = 2013101600;
 $plugin->requires = 2011120500; // YYYYMMDDHH (This is the release version for Moodle 2.2)
 $plugin->maturity = MATURITY_STABLE;

@@ -17,7 +17,7 @@ class smbwebclient_moodle extends smbwebclient {
     var $cfgMaxFolderZipSizeMB = 200; // maximum zip size in MBs for downloading folders as zips - default if not set is 200MB
     var $criticalError;
      
-    function smbwebclient_moodle(){    
+    function __construct(){
         global $smb_cfg, $CFG, $USER, $SESSION;
 		
         // Jon Witts Mod 2009060900: if ssl has not been explicitly set, then check Moodle config for loginhttps and set accordingly
@@ -42,7 +42,7 @@ class smbwebclient_moodle extends smbwebclient {
         }
 
         // call parent constructor
-        parent::smbwebclient();      
+        parent::__construct();
 
         // set username and login if the user has an encrypted version of their password available (i.e. ldapcapture authentication plugin is installed).
         if (isset($SESSION->epassword) && $SESSION->epassword!=''){            

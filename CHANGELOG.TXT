@@ -1,4 +1,5 @@
  Change log:
+ Version 2016103100 - Start of PHP7 support + some deprecation fixes.
  Version 2014122000 - Potential fix for files showing up with N flag against them in directory listing
  Version 2014032400 - Fixed bug where shares could not be configured in Moodle 2.6
  Version 2013101600 - Fixed bug where settings page would always show sponsorship text and get stuck in upgrade loop
