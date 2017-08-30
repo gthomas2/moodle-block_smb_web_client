@@ -200,7 +200,7 @@ function __construct ()
 function Run ()
 {
     $this->where = $path = stripslashes(@$_REQUEST['path']);
-    
+
     if (isset($this->inlineFiles[$path])) {
         $this->DumpInlineFile($path);
         exit;
@@ -221,7 +221,7 @@ function Run ()
     }
 
     $this->Debug('Path = '.$path);
-    
+
     $browse=$this->Browse();
 
     // GT MOD 2013060600
@@ -230,11 +230,11 @@ function Run ()
     if ($browse=='NT_STATUS_ACCESS_DENIED' && $path==''){
         $browse='LOGON_FAILURE';
     }
-    
+
     switch ($browse) {
         case '': break;
         case 'LOGON_FAILURE': $this->accessproblem='LOGON_FAILURE';
-        case 'ACCESS_DENIED':            
+        case 'ACCESS_DENIED':
             $this->CleanCachedAuth();
             header('Location: '.$this->GetUrl($path, 'auth', '1'));
             exit;
@@ -242,19 +242,19 @@ function Run ()
             $this->ErrorMessage($this->status);
             // prevent infinite redirects (GT MOD 2013060600)
             if ($path!='' && $this->status!=''){
-                header('Location: '.$this->FromPath('..'));                
+                header('Location: '.$this->FromPath('..'));
             }
-            
+
             if ($browse=='NT_STATUS_BAD_NETWORK_NAME'){
                 die ('Error - bad share or path - '.$this->server.'/'.$this->share.'/'.$path);
-            } else {            
+            } else {
                 die ('Error: '.$browse);
             }
-            
-            
+
+
             exit;
     }
-    
+
 
     $this->View ();
 }
@@ -351,7 +351,7 @@ function DumpFile($file='', $name='', $isAttachment=false, $isCacheable=false, $
     if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
         $name = preg_replace('/\./','%2e', $name, substr_count($name, '.') - 1);
     }
-    
+
     // GT MOD 2009080300 - set mime type to that specified in function args
     if ($setMimeType!==null && $setMimeType!=''){
         $mimeType = $setMimeType;
@@ -420,13 +420,13 @@ function GetIP()
         if (isset($_SERVER[$var])) return $_SERVER[$var];
     }
     return 'unknown';
-}                                                                   
+}
 
 # debugging messages
 function Debug ($message, $level=0)
 {
     $btrace='';
-    if ($this->debug>2){      
+    if ($this->debug>2){
         syslog(LOG_INFO, $this->user.'['.$this->GetIP().']: ##### START DEBUG MESSAGE #####');
         $backtrace=debug_backtrace();
         for ($b=0; $b<count($backtrace)-1; $b++){
@@ -446,7 +446,7 @@ function Debug ($message, $level=0)
             syslog(LOG_INFO, $this->user.'['.$this->GetIP().']: '.$line);
         }
     }
-    if ($this->debug>2){     
+    if ($this->debug>2){
         syslog(LOG_INFO, $this->user.'['.$this->GetIP().']: ##### END DEBUG MESSAGE #####');
         syslog(LOG_INFO, $this->user.'['.$this->GetIP().']:');
     }
@@ -556,7 +556,7 @@ function CleanCachedAuth ()
     global $USER;
     $mode = $this->type;
     @$_SESSION['swcCachedAuth'][$mode][$this->$mode] = '';
-    
+
     if ($this->accessproblem=='LOGON_FAILURE'){
         unset($USER->epassword);
         unset($_SESSION['swcUser']);
@@ -591,26 +591,26 @@ function BasicAuth ($command = 'get')
                 $this->CleanCachedAuth();
                 exit;
             }
-            
+
             // GT MOD 2012051300 - removed strip slashes or manually typed window domain prefixes wont work
             //$this->user = stripslashes(@$_SERVER['PHP_AUTH_USER']);
             //$this->pw = stripslashes(@$_SERVER['PHP_AUTH_PW']);
-            
+
             $this->user = (@$_SERVER['PHP_AUTH_USER']);
-            $this->pw = (@$_SERVER['PHP_AUTH_PW']);            
-            
+            $this->pw = (@$_SERVER['PHP_AUTH_PW']);
+
             break;
         case 'submit':
             if (@$_SESSION['swcAuthSubmit']) {
                 $_SESSION['swcAuthSubmit'] = false;
-            
+
                 // GT MOD 2012051300 - removed strip slashes or manually typed window domain prefixes wont work
                 //$this->user = stripslashes(@$_SERVER['PHP_AUTH_USER']);
                 //$this->pw = stripslashes(@$_SERVER['PHP_AUTH_PW']);
-                
+
                 $this->user = (@$_SERVER['PHP_AUTH_USER']);
-                $this->pw = (@$_SERVER['PHP_AUTH_PW']);                
-                
+                $this->pw = (@$_SERVER['PHP_AUTH_PW']);
+
                 return true;
             }
             return false;
@@ -627,9 +627,9 @@ function FormAuth ($command = 'get')
                 $time = date("h:i:s");
                 $path = $this->SafePrintablePath();
                 $action = $this->GetUrl($this->where);
-                
+
                 $username=!empty($_SESSION['swcUser']) ? $_SESSION['swcUser'] : $smb_cfg->cfgUserPrefix.$USER->username;
-                
+
                 $page = $this->Page('unauthorized',
                     "<p>{$path}</p><p class=\"authform\"><form name=\"authForm\" method=\"post\" action=\"{$action}\">".
                     $this->Input('swcUser', $username).'<br />'.
@@ -685,7 +685,7 @@ function GetCachedAuth ()
 }
 
 function View ()
-{    
+{
     $messages='';
     $selected = (is_array(@$_POST['selected'])) ? $_POST['selected'] : array();
     switch ($this->type) {
@@ -722,7 +722,7 @@ function View ()
     $header .= "<th width=\"100%\">&nbsp;</th><th class=\"language\">{$lang}</th><th class=\"toolbar\"><nobr>{$logout}&nbsp;&nbsp;{$time}</nobr></th></tr>";
 
     $lines = '';
-    
+
     if (!empty($this->results)){
         foreach ($this->results as $file => $data) {
             if ($this->cfgHideDotFiles AND $file[0] == '.') continue;
@@ -779,14 +779,14 @@ function View ()
     if ($this->accessproblem=='LOGON_FAILURE'){
         $messages.='<div class="error logon_failure"><a href="'.$this->GetUrl($this->where, 'auth', '1').'">'.get_string('logonerror','block_smb_web_client').'</a></div>';
     }
-    
+
     $macros['{action}'] = $this->GetUrl($this->where);
     $macros['{ok}'] = $this->_("Ok");
     $macros['{header}'] = $header;
     $macros['{lines}'] = $lines;
     $macros['{actionbar}'] = $actionbar;
     $macros['{messages}'] = $messages;
-    
+
 
     print $this->Page($this->name, $this->Template("style/view.thtml", $macros));
 }
@@ -988,7 +988,7 @@ function ClamAV($file){
 			} else {
 				$this->status = 'An unknown error occurred - please contact your webmaster';
 				return true;
-			}	
+			}
 		}
 	}
 	if (!$location) {
@@ -1216,17 +1216,17 @@ function __construct($path='')
 # NEW FORMAT path: //server/share/path
 function Go ($path = '')
 {
-    
+
     $this->name = basename($path); // bug fix 2013021900 (this wasn't being set for windows style shares in previous version)
     $a = ($path <> '') ? preg_split('/\//',$path) : array(); // bug fix 2013021900 (this wasn't being set for windows style shares in previous version)
-    
+
     if (preg_match('/^\/\//', $path)){
         // GT MOD - 2013012800 (NEW FORMAT path - standard windows share format)
         // bug fix 2013090300 (remove double slashes except for at start) - e.g. //server/share//test is bad and should be //server/share/test
         $path='/'.str_replace('//','/',$path);
         $tmparr=explode('//', $path);
         $tmpstr=$tmparr[1];
-        $tmparr=explode('/', $tmpstr);   
+        $tmparr=explode('/', $tmpstr);
         $this->path='';
         $this->workgroup=false;
         $this->type='share';
@@ -1234,8 +1234,8 @@ function Go ($path = '')
             switch ($i) {
                 case 0: $this->server = $tmparr[$i]; break;
                 case 1: $this->share = $tmparr[$i]; break;
-            } 
-            if ($i>1){       
+            }
+            if ($i>1){
                 $this->path.=$this->path=='' ? '' : '/';
                 $this->path.=$tmparr[$i];
             }
@@ -1476,7 +1476,7 @@ function _SmbClient ($command='', $path='', $message='', $dumpFile=false)
                 $username=$this->cfgUserPrefix.$username;
             }
         }
-        
+
         // GT MOD 2012051300 - convert windows backslashes to forward slashes
         $username=str_replace('\\','/',$username);
 
@@ -1508,7 +1508,7 @@ function _SmbClient ($command='', $path='', $message='', $dumpFile=false)
     } else {
         $cmdline .= ($dumpFile) ? ' 2' : ' 2>&1';
     }
-        
+
 
     if ($command == 'compress') {
         $tmpfname = tempnam("/tmp", "swcZ");
@@ -1523,10 +1523,11 @@ function _SmbClient ($command='', $path='', $message='', $dumpFile=false)
 
 
 // GT Mod 2008080400 new param $attempt (first attempt to execute command = 0)
-function _ParseSmbClient ($cmdline, $dumpFile=false, $attempt=0)
-{
-    
-   
+function _ParseSmbClient ($cmdline, $dumpFile=false, $attempt=0) {
+
+    if (!empty($this->cfgProtocol)) {
+        $cmdline .= ' -m ' . $this->cfgProtocol; // GT Mod 2017083000 use specific protocol when communicating.
+    }
     $this->accessproblem=false;
     $sec_cmdline = str_replace($this->pw, '****', $cmdline);
     if (! $dumpFile) {
@@ -1552,8 +1553,8 @@ function _ParseSmbClient ($cmdline, $dumpFile=false, $attempt=0)
         }
         switch ($lineType) {
             case 'SKIP': continue;
-            
-            // GT MOD 2008080400 - if no access, then try again with username prefixed with workgroup            
+
+            // GT MOD 2008080400 - if no access, then try again with username prefixed with workgroup
             case 'LOGON_FAILURE': $this->accessproblem='LOGON_FAILURE'; $retparse=$this->_RetryParse($cmdline, $dumpFile, $attempt); if ($attempt==1 && $this->accessproblem=='LOGON_FAILURE'){$this->CleanCachedAuth(); return;} return($retparse); break;
             case 'ACCESS_DENIED' : $this->accessproblem='ACCESS_DENIED'; $retparse=$this->_RetryParse($cmdline, $dumpFile, $attempt); if ($attempt==1 && $this->accessproblem=='ACCESS_DENIED'){return($this->access_denied());} return($retparse); break;
 
@@ -1674,7 +1675,7 @@ function _RetryParse ($cmdline, $dumpFile, $attempt){
         $tryuser=$this->user;
     }
 
- 
+
     // Prefix user name with workgroup
     if ($this->user <> '') {
         switch ($this->cfgAuthMode) {
@@ -1687,8 +1688,8 @@ function _RetryParse ($cmdline, $dumpFile, $attempt){
                             ' -U '.escapeshellarg($tryuser),
                             $cmdline    );
 
-                           
-   
+
+
     $this->_ParseSmbClient($cmdline, $dumpFile, $attempt);
 }
 
@@ -1729,6 +1730,6 @@ function _DirectoryName ($path='')
 
 if (! isset($SMBWEBCLIENT_CLASS)) {
     $swc = new smbwebclient;
-    $swc->Run();	
+    $swc->Run();
 }
 ?>

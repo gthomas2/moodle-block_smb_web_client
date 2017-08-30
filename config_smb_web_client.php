@@ -9,7 +9,7 @@
 global $DB;
 $smb_cfg=new stdClass;
 
-# Log facility 
+# Log facility
 
 $smb_cfg->cfgFacility = LOG_DAEMON;
 
@@ -53,7 +53,7 @@ $smb_cfg->cfgDefaultCharset = 'ISO-8859-1';
 $smb_cfg->cfgDefaultServer = 'localhost';
 
 ###################################################################
-# Format to upload compressed folders: tar, tgz or zip 
+# Format to upload compressed folders: tar, tgz or zip
 #
 # $smb_cfg->cfgArchiver = 'tgz';
 
@@ -80,8 +80,8 @@ if (!empty($upfx)){
 }
 
 ###################################################################
-# Arrays of shares ( other than home directory ) and the courses 
-# they can be shown in.  This is to allow administrators to put 
+# Arrays of shares ( other than home directory ) and the courses
+# they can be shown in.  This is to allow administrators to put
 # access to certain shares in certain courses only
 
 $smb_cfg->cfgWinShares=array();
@@ -136,7 +136,7 @@ if (!empty($shares)){
                 }
 
                 /*
-                var_dump(strpos($tokenstr,'[')); 
+                var_dump(strpos($tokenstr,'['));
                 var_dump(strpos($tokenstr,']'));
                  */
 
@@ -197,7 +197,7 @@ $smb_cfg->cfgMaxFolderZipSizeMB=get_config('smb_web_client', 'zipmax');
 # Path to smbclient program.
 # i.e. $smb_cfg->cfgSmbClient = '/usr/bin/smbclient';   (for Linux)
 # i.e. $smb_cfg->cfgSmbClient = '/usr/local/bin/smbclient'; (for FreeBSD)
-# 
+#
 # Ensure that this is correct...! Don't rely on it being correct.
 # Establish the correct path for your SMBClient binary and stick it below.
 
@@ -272,7 +272,7 @@ $smb_cfg->cfgLogLevel = get_config('smb_web_client', 'log');
 $smb_cfg->cfgAntivirus = get_config('smb_web_client', 'av');
 
 ###################################################################
-# If above set to 'ClamAV', use clamscan or clamdscan? 
+# If above set to 'ClamAV', use clamscan or clamdscan?
 # clamdscan is quicker by a significant margin and if exists, should
 # be used in preference over clamscan. Both should be located in
 # /usr/bin/
@@ -286,9 +286,9 @@ $smb_cfg->cfgAntivirus = get_config('smb_web_client', 'av');
 $smb_cfg->cfgHomeDirField = get_config('smb_web_client', 'homef');
 
 ###################################################################
-# If you need to traverse into a SUBFOLDER within the folder 
-# home directory specified in AD to get to their documents, 
-# set the below to true, and specify the folder name 
+# If you need to traverse into a SUBFOLDER within the folder
+# home directory specified in AD to get to their documents,
+# set the below to true, and specify the folder name
 # in $smb_cfg->cfgHomeDirSubFolder
 
 $smb_cfg->cfgHomeTraverse = get_config('smb_web_client', 'homet');
@@ -308,7 +308,11 @@ $smb_cfg->cfgIEProtectMsOffice=get_config('smb_web_client', 'office');
 ###################################################################
 # Forces https protocol if set to true
 
-$smb_cfg->cfgssl=get_config('smb_web_client', 'ssl');
+$smb_cfg->cfgssl = get_config('smb_web_client', 'ssl');
+
+###################################################################
+# Get specific protocol to use when connecting.
+$smb_cfg->cfgProtocol = get_config('smb_web_client', 'protocol');
 
 ###################################################################
 # Skips -N command line parameter (don't prompt for password)

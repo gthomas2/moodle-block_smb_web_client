@@ -28,11 +28,14 @@ if (!$site = get_site()) {
 
 $swc = new smbwebclient_moodle;
 if ($swc->criticalError){
-    print_header("$site->shortname: Error", $site->fullname,
-     "Nework Home Directory");
+
+    $PAGE->set_title("$site->shortname: Error");
+    $PAGE->set_heading("$site->shortname: Error");
+    $PAGE->set_url('/blocks/smb_web_client/smbwebclient_moodle.php');
+
     echo ("<h1>Sorry, you cannot view your homedirectory online</h1>");
     echo ("<p>Error Message: $swc->criticalError</p>");
-    return;
+    die();
 } else {
     $swc->Run();
 }
