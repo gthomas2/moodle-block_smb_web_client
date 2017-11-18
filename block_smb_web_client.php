@@ -6,6 +6,7 @@ require_once (dirname(__FILE__).'/lib.php');
 
 /**
  *==============================================================
+ * (c) Moodle 3.3+ Block - Guy Thomas 2017
  * (c) Moodle 2.4+ Block - Guy Thomas Citricity Ltd 2013
  * (c) Moodle 2.3+ Block - Guy Thomas Citricity Ltd 2012
  * (c) Moodle 2.2 Block - Marc Coyles Ossett Academy 2012
@@ -26,7 +27,7 @@ require_once (dirname(__FILE__).'/lib.php');
 global $smb_cfg, $CFG, $USER, $site, $share;
 //@include('config_smb_web_client.php'); // config for this block only
 
-class block_smb_web_client extends block_base { 
+class block_smb_web_client extends block_base {
 
     var $blockwww;
     var $blockdir;
@@ -35,17 +36,17 @@ class block_smb_web_client extends block_base {
     function init() {
         global $CFG, $smb_cfg;
         $this->gcfg=get_config('block_smb_web_client');
-        
-        $title=get_config('smb_web_client', 'customtitle');        
+
+        $title=get_config('smb_web_client', 'customtitle');
         if (empty($title)){
             $title=get_string('pluginname', 'block_smb_web_client');
         }
-        
 
-        
+
+
         // Set title and version
         $this->title = $title == "[[blockmenutitle]]" ? "Windows Share Web Client" : $title;
-        
+
 	// set block dir
 	$this->blockdir=$CFG->dirroot.'/blocks/smb_web_client';
         // set block www
@@ -63,9 +64,7 @@ class block_smb_web_client extends block_base {
         $this->content = new stdClass;
         $this->content->footer = '';
         $this->content->text = '';
-		
-			
-        
+
         //No config warning
         if (!isset($smb_cfg)){
             // GT mod 2008/12/19 - report different error if file exists but config variable not set
@@ -76,45 +75,41 @@ class block_smb_web_client extends block_base {
             }
             return;
         }
-		
+
         // Jon Witts Mod 2009060900: if ssl has not been explicitly set, then check Moodle config for loginhttps and set accordingly
         if (!isset($smb_cfg->cfgssl) && (isset($CFG->loginhttps) && $CFG->loginhttps)){
                 $smb_cfg->cfgssl=true;
-        }		
-		
+        }
 
         //EMC mod to only show for logged in users!
         if (!isloggedin() || isguestuser()) {
             return false;
         }
         //END EMC mod
-        
-        
+
         $sharelinks='';
 
-                
         // GT Mod - 2008091500
         if ($USER->auth!='manual'){
             // get home directory string from language file
             $homedirstr=get_string('homedir', 'block_smb_web_client');
-            $homedirstr=$homedirstr=="[[homedir]]" ? "My Home Directory" : $this->title;
             $shareurl=$this->blockwww.'/smbwebclient_moodle.php?sesskey='.$USER->sesskey.'&amp;share=__home__';
-			
+
             // modify shareurl to use ssl if necessary
             if (isset($smb_cfg->cfgssl) && $smb_cfg->cfgssl){
                     $shareurl=str_ireplace('http://', 'https://', $shareurl);
-            }			
-            
+            }
+
             // add home directory link to block content
             $sharelinks = '<li style="list-style:none;" class="share share-home"><a id="block_smb_web_client_home" href="'.$shareurl.'" target="_blank" onclick="window.open(\''.$shareurl.'\',\''.$this->nice_popup_title($homedirstr).'\',\'width=640,height=480, scrollbars=1, resizable=1\'); return false;">'.$homedirstr.'</a></li>';
         }
         // END GT Mod
-        
+
         // GT MOD 2013012500 new share restriction filering code
         if (isset($smb_cfg->cfgWinShares) && !empty($smb_cfg->cfgWinShares)){
             foreach ($smb_cfg->cfgWinShares as $share_arr) {
                 if (swc::can_show_share($share_arr)){
-                    $sharelinks.=$this->sharelink($share_arr);         
+                    $sharelinks.=$this->sharelink($share_arr);
                 } else {
                     // an admin user shouldn't be able to open this share but lets be kind and let them know it exists
                     if (has_capability('block/smb_web_client:addinstance', get_system_context())){
@@ -124,21 +119,21 @@ class block_smb_web_client extends block_base {
                 }
             }
         }
-        
 
-        
+
+
         // GT MOD 2013060600 - add links to shares correctly!!!!
         if (!empty($sharelinks)){
             $sharelinks='<ul class="sharelinks">'.$sharelinks.'</ul>';
         }
-        
+
         $this->content->text=$sharelinks;
-        
+
         // end new code block for shares - JWI
         return $this->content;
     }
-    
-    
+
+
     /**
      * get share link string
      * @global stdClass $CFG
@@ -151,29 +146,29 @@ class block_smb_web_client extends block_base {
         global $CFG, $USER, $smb_cfg;
         $sharekey=$share_arr['id'];
         $shareurl=$this->blockwww.'/smbwebclient_moodle.php?sesskey='.$USER->sesskey.'&amp;share='.$sharekey;
-		
+
         // GT Mod 2009031700 force https protocol if necessary
         if (isset($smb_cfg->cfgssl) && $smb_cfg->cfgssl){
                 $shareurl=str_ireplace('http://', 'https://', $shareurl);
         }
-		
+
         return('<li style="list-style:none;" class="share"><a id="block_smb_web_client_'.$sharekey.'" href="'.$shareurl.'" onclick="window.open(\''.$shareurl.'\',\''.$this->nice_popup_title($share_arr['title']).'\',\'width=640,height=480, scrollbars=1, resizable=1\'); return false;">'.$share_arr['title'].'</a></li>');
     }
-    
+
     /**
     * Converts a string to a ie popup title friendly string
     * @param required $str - the title you want to make friendly to ie
-    */    
-    private function nice_popup_title($str){    	
+    */
+    private function nice_popup_title($str){
     	$bannedChars=array(" ", "*", "{", "}", "(", ")", "<", ">", "[", "]", "=", "+", "\"", "\\", "/", ",",".",":",";");
-    					
+
     	foreach ($bannedChars as $banned){
     		$str=str_replace($banned,"_", $str);
     	}
-    	
+
     	return ($str);
-	
-    }    
+
+    }
 
     function has_config(){
         return true;
@@ -187,15 +182,15 @@ class block_smb_web_client extends block_base {
         $ap_ldap=new auth_plugin_ldap();
         $ldapconnection=$ap_ldap->ldap_connect();
         $user_dn = $ap_ldap->ldap_find_userdn($ldapconnection, $username);
-        $sr = ldap_read($ldapconnection, $user_dn, 'objectclass=*', array());	
+        $sr = ldap_read($ldapconnection, $user_dn, 'objectclass=*', array());
         if ($sr)  {
             $info=$ap_ldap->ldap_get_entries($ldapconnection, $sr);
         } else {
             return (false);
         }
         return ($info);
-    }    
-    
+    }
+
 }
 
 ?>

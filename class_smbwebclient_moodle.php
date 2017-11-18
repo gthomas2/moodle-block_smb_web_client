@@ -156,6 +156,9 @@ class smbwebclient_moodle extends smbwebclient {
 
             // get user ldap object
             $ldapObj=$this->_getldap_entry($USER->username);
+
+            $homedirfld = isset($ldapObj[0][$homedirfld]) ?: strtolower($homedirfld);
+
             if (!isset($ldapObj[0][$homedirfld][0])){
                 $this->criticalError='No home directory specified in ldap for this user';
             }
@@ -230,7 +233,7 @@ class smbwebclient_moodle extends smbwebclient {
     		$_SESSION['swcErrorMessage'] = '';
     	}
         // GT Mod 2011081000 set folder image instead of pix path
-        $folderimg=$OUTPUT->pix_url('f/folder');
+        $folderimg=$OUTPUT->image_url('f/folder');
         // GT Mod 2009031700 force https protocol on pix path if necessary
         if (isset($this->cfgssl) && $this->cfgssl){
             $folderimg=str_ireplace('http://', 'https://', $folderimg);

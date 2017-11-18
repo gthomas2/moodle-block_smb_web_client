@@ -1,5 +1,6 @@
 <?php
 $string['smb_web_client:addinstance']='Add SMB web client instance';
+$string['smb_web_client:myaddinstance'] = 'Add SMB web client to profile page';
 $string['homedir'] = 'Home Directory';
 $string['pluginname'] = 'Windows Share access';
 

@@ -7,12 +7,13 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    'block/smb_web_client:myaddinstance'=> array(
+    'block/smb_web_client:myaddinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
-            'manager' => CAP_ALLOW
-        )
+            'user' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/my:manageblocks'
     )
 );
 ?>
